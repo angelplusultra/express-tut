@@ -7,6 +7,7 @@ import passport from "passport";
 import LocalStrategy from "./auth/local.js";
 import logger from "./middleware/logger.js";
 import { config } from "dotenv";
+import './auth/google.js'
 
 config({path: 'src/config/.env'})
 
