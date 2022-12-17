@@ -1,4 +1,4 @@
-import { Schema, model } from "mongoose";
+import mongoose, { Schema, model } from "mongoose";
 
 const todoSchema = new Schema({
     title: {
@@ -8,7 +8,12 @@ const todoSchema = new Schema({
     description: {
         type: String,
         required: true
+    },
+    authorID: {
+        type: mongoose.Types.ObjectId,
+        required: true
     }
+
 }, {timestamps: true})
 
 export default model('Todo', todoSchema)

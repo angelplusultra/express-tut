@@ -1,15 +1,18 @@
 import { Router } from "express";
-import Todo from "../models/Todo.js";
-import mongoose from "mongoose";
-import controllers from "../controllers/todocontroller.js";
-import {isAuthenticated, isAuth} from "../middleware/auth.js";
+
+import controllers from "../../controllers/apicontroller.js";
+import { isAuth, jwtAuth, passportAuth } from "../../middleware/auth.js";
+
 
 const { getAllTodos, getSingleTodo, createTodo, updateTodo, deleteTodo } = controllers
 
 const router = Router();
 
+// *******Authorization Gateway**************
+// router.use(isAuth) Vanilla Auth
+// router.use(jwtAuth) JWT Auth 
+router.use(passportAuth) //Passport Auth
 
-router.use(isAuth)
 
 // Get All Todos
 router.get("/", getAllTodos);
