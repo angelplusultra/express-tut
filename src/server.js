@@ -10,6 +10,7 @@ import passport from "passport";
 import MongoStore from "connect-mongo";
 import path from 'path'
 import methodOverride from 'method-override'
+import flash from 'express-flash'
 
 
 /// .env Config
@@ -34,6 +35,7 @@ app.use(express.static('src/public'))
 
 app.use(methodOverride('_method'))
 
+app.use(flash())
 
 //Express Session
 app.use(session({

@@ -8,18 +8,28 @@ const authController = {
   Register: (req, res) => {
     const { email, password, confirmPassword } = req.body;
 
+    const errors = []
+
     //  1: Form Validation
     if (!email || !password || !confirmPassword)
-      return res.status(400).json({ err: "Invalid form" });
+      errors.push({msg: 'Invalid Form'})
     if (password !== confirmPassword)
-      return res.status(400).json({ err: "Passwords do not match" });
+      errors.push({ msg: "Passwords do not match" });
     if (!validator.isEmail(email))
-      return res.status(400).json({ err: "Invalid email" });
+      errors.push({ msg: "Invalid email" });
+
+
+      
 
     //  2: Search the DB if the use already exists
     User.findOne({ email }).then((user) => {
       if (user)
-        return res.status(400).json({ err: "Email already registered" });
+        errors.push({ msg: "Email already registered" });
+
+        if(errors.length){
+          req.flash("errors", errors)
+          return res.redirect('/register')
+        }
 
       //  3: Password hashing
       bcrypt
