@@ -13,55 +13,101 @@
       rel="stylesheet"
       href="https://bootswatch.com/5/lux/bootstrap.min.css"
     />
+    <style>
+      .profilePic:hover{
+        cursor: pointer;
+      }
+      body{
+        height: 200vh;
+      }
+      #todos{
+        margin-top:13em ;
+      }
+
+    </style>
   </head>
   <body>
-    <nav>
-      <a href="/register">Register</a>
-      <a href="/login">Login</a>
-    </nav>
+    <!-- <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="/">To-Deux</a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarColor01"
+          aria-controls="navbarColor01"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarColor01">
+          <ul class="navbar-nav me-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="/register">Register</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/login">Login</a>
+            </li>
+          </ul>
+          <ul class="navbar-nav">
+            <form method="post" action="">
+              <label for="fileField"><img width="40"
+                class="rounded-circle nav-item profilePic border border-muted  border-2"
+                src="<%= !user.profilePic ? `nopic.jpg` : user.profilePic%>"
+                alt=""></label>
+              <input hidden type="file" name="image" id="fileField">
+          </form>
+          
+            <a class="nav-item nav-link" href="/auth/logout">Logout</a>
+          </ul>
+        </div>
+      </div>
+    </nav> -->
+
+    <!-- Navbar Partial -->
+    <%- include('../partials/navbar') %>
     <div class="flash">
-        <%if(messages.success){%>
-            <div class="alert alert-success alert-dismissible fade show">
-                <%= messages.success %>
-              </div>
-        <%}%>
+      <%if(messages.success){%>
+      <div class="alert alert-success alert-dismissible fade show">
+        <%= messages.success %>
+      </div>
+      <%}%>
     </div>
-    <section>
-      <h1>Hello, <%=user.displayName ? user.displayName : user.email %></h1>
-      <img
-        src="<%= !user.profilePic ? `nopic.jpg` : user.profilePic%>"
-        alt=""
-      />
-      <form
-        method="post"
-        enctype="multipart/form-data"
-        action="/api/uploadsingle"
-      >
-        <input type="file" name="image" onchange="form.submit()" id="" />
-      </form>
+    <section style="margin-top: 70px;" class="container">
+      <h1 class="display-5"  >Hello, <%=user.displayName ? user.displayName : user.email %></h1>
+      
+      
     </section>
 
-    <div class="todos">
-      <ul>
+    
+    <div  class="create container mt-5">
+      <h2>Create a new Todo</h2>
+      <form class="form-group row" method="post" action="/api">
+        <label class="col-sm-2 col-form-label" for="title">Title</label>
+        <input class="form-control" type="text" name="title" id="" />
+        <label class="col-sm-2 col-form-label" for="description">Description</label>
+        <textarea class="form-control" name="description" id="" cols="30" rows="10"></textarea>
+        <button class="btn btn-primary mt-4" type="submit">Submit</button>
+      </form>
+    </div>
+
+
+    <div  id="todos"  class="container ">
+      <h2 class="my-3">Todos</h2>
+      <ul class="list-group text-center">
         <%todos.forEach(todo => {%>
-        <li>
-          <a href="/api/<%=todo._id%>"><h3><%=todo.title%></h3></a>
+        <div class="list-group-item justify-content-between d-flex align-items-center list-group-item-action text-center">
+          <a class="" href="/api/<%=todo._id%>"><p class="lead"><%=todo.title%></p></a>
           <form method="post" action="/api/<%=todo._id%>?_method=DELETE">
-            <button type="submit">Delete</button>
+            <button class="btn btn-primary" type="submit">Delete</button>
           </form>
-        </li>
+
+        </div>
+          
+        
         <%})%>
       </ul>
-    </div>
-    <div class="create">
-      <h2>Create a new Todo</h2>
-      <form method="post" action="/api">
-        <label for="title">Title</label>
-        <input type="text" name="title" id="" />
-        <label for="description">Description</label>
-        <textarea name="description" id="" cols="30" rows="10"></textarea>
-        <button type="submit">Submit</button>
-      </form>
     </div>
   </body>
 </html>

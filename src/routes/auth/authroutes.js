@@ -11,10 +11,15 @@ router.post("/register", Register);
 router.post("/login", Login);
 
 // ***********PASPPORT LOCAL AUTH**************
-router.post('/passport',passport.authenticate('local', {failureRedirect: '/login', failureFlash: true}), (req, res) => {
-  req.flash('success', 'Welcome back!')
-  res.redirect('/api')
-});
+router.post(
+  "/passport",
+  passport.authenticate("local", {
+    failureRedirect: "/login",
+    failureFlash: true,
+    successRedirect: "/api",
+    successFlash: true,
+  })
+);
 
 // router.post("/passport", (req, res, next) => {
 //   passport.authenticate("local", (err, user, info) => {
@@ -51,36 +56,38 @@ router.get(
 );
 
 // the callback uri after the user grants/denies access on the consent screen AND fires the Google Strategy defined in ../../auth/passport.js
-router.get(
-  "/google/redirect",(req, res, next) => {
-    passport.authenticate("google", (err, user, info) => {
-      if (err) {
-        return next(err); // will generate a 500 error
+router.get("/google/redirect", (req, res, next) => {
+  passport.authenticate("google", (err, user, info) => {
+    if (err) {
+      return next(err); // will generate a 500 error
+    }
+    // Generate a JSON response reflecting authentication status
+    if (!user) {
+      req.flash("errors", "No User Exists With that Email");
+      return res.redirect("/login");
+    }
+    // ***********************************************************************
+    // "Note that when using a custom callback, it becomes the application's
+    // responsibility to establish a session (by calling req.login()) and send
+    // a response."
+    // Source: http://passportjs.org/docs
+    // ***********************************************************************
+    req.login(user, (loginErr) => {
+      if (loginErr) {
+        return next(loginErr);
       }
-      // Generate a JSON response reflecting authentication status
-      if (!user) {
-        req.flash("errors", "No User Exists With that Email");
-        return res.redirect("/login");
-      }
-      // ***********************************************************************
-      // "Note that when using a custom callback, it becomes the application's
-      // responsibility to establish a session (by calling req.login()) and send
-      // a response."
-      // Source: http://passportjs.org/docs
-      // ***********************************************************************
-      req.login(user, (loginErr) => {
-        if (loginErr) {
-          return next(loginErr);
-        }
-        req.flash('success', 'Welcome!')
-        return res.redirect("/api");
-      });
-    })(req, res, next);
-  })
+      req.flash("success", "Welcome!");
+      return res.redirect("/api");
+    });
+  })(req, res, next);
+});
 
+router.get("/logout", (req, res, next) => {
+  req.logout((err) => {
+    if (err) return next(err);
 
-router.get("/login", (req, res) => {
-  res.render("login");
+    res.redirect("/");
+  });
 });
 
 export default router;

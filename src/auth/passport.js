@@ -51,7 +51,7 @@ passport.use(
         .then((user) => {
           if (user) return done(null, user);
 
-          User.create({ googleID: profile.id, displayName: profile.displayName })
+          User.create({ googleID: profile.id, displayName: profile.displayName, profilePic: profile._json.picture })
             .then((user) => {
               return done(null, user);
             })
@@ -66,19 +66,19 @@ passport.use(
   new LocalStrategy({ usernameField: "email", passReqToCallback: true }, (req, email, password, done) => {
     console.log(email);
     if (!email || !password)
-      return done(null, false, req.flash('errors', 'Invalid Form'));
+      return done(null, false, {message: 'Invalid Form'});
     User.findOne({ email })
       .then((user) => {
         if (!user)
-          return done(null, false, req.flash('errors', 'User not found'));
+          return done(null, false, {message: 'User not found'});
 
         bcrypt
           .compare(password, user.password)
           .then((isMatch) => {
             if (!isMatch)
-              return done(null, false, req.flash('errors', 'Invalid credentials'));
+              return done(null, false, {message: 'Invalid Credentials'});
 
-            return done(null, user, req.flash('success', `Welcome back!`));
+            return done(null, user, {message: 'Welcome back!'});
           })
           .catch((err) => done(err, false));
       })
