@@ -1,22 +1,31 @@
 import mongoose, { Schema, model } from "mongoose";
 
 const userSchema = new Schema({
-    email: {
-        type: String,
-        unique: true
+  email: {
+    type: String,
+  },
+  password: {
+    type: String,
+  },
+  googleID: {
+    type: String,
+    
+  },
+  apikey: {
+    type: mongoose.Types.ObjectId,
+    default: new mongoose.Types.ObjectId()
+  },
+  profilePicture: {
+    picturePath: {
+      type: String,
+      default: ''
     },
-    password: {
-        type: String,
-    },
-    apiKey: {
-        type: mongoose.Types.ObjectId,
-        
-        unique: true
-    },
-    googleID: {
-        type: String,
-
+    cloudinaryId: {
+      type: String,
+      default: ''
     }
-})
+  },
+  displayName: String
+});
 
-export default model('User', userSchema)
+export default model("User", userSchema);

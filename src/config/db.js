@@ -1,5 +1,6 @@
 import mongoose from "mongoose"
-
+import keysCongig from "./keys.js"
+const keys = keysCongig()
 const connectDB = () => {
     mongoose.set('strictQuery', false)
 
