@@ -15,13 +15,17 @@ const userSchema = new Schema({
     type: mongoose.Types.ObjectId,
     default: new mongoose.Types.ObjectId()
   },
-  displayName: {
-    type: String,
-    
+  profilePicture: {
+    picturePath: {
+      type: String,
+      default: ''
+    },
+    cloudinaryId: {
+      type: String,
+      default: ''
+    }
   },
-  profilePic: {
-    type: String,
-  }
+  displayName: String
 });
 
 export default model("User", userSchema);

@@ -17,7 +17,9 @@ router.post(
     failureRedirect: "/login",
     failureFlash: true,
     successRedirect: "/api",
-    successFlash: true,
+    successMessage: 'Welcome'
+    
+    
   })
 );
 
@@ -82,7 +84,10 @@ router.get("/google/redirect", (req, res, next) => {
   })(req, res, next);
 });
 
+
+
 router.get("/logout", (req, res, next) => {
+  
   req.logout((err) => {
     if (err) return next(err);
 

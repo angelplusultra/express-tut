@@ -9,4 +9,8 @@ router.use('/', publicRoutes)
 router.use("/auth", authRoutes);
 router.use("/api", apiRoutes);
 
-export default router;
+router.get('*', (req, res) => {
+    res.status(404).render('public/404')
+})
+
+export default~ router;

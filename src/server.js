@@ -33,10 +33,16 @@ app.set('views', 'src/views')
 
 app.use(express.static('src/public'))
 
-app.use(methodOverride('_method'))
+app.use(methodOverride('_method'));
 
-app.use(flash())
 
+
+app.use(flash());
+
+app.use((req, res, next) => {
+console.log(res.locals)
+next()
+})
 //Express Session
 app.use(session({
   secret: process.env.SESSION_SECRET,

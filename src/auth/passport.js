@@ -51,7 +51,7 @@ passport.use(
         .then((user) => {
           if (user) return done(null, user);
 
-          User.create({ googleID: profile.id, displayName: profile.displayName, profilePic: profile._json.picture })
+          User.create({ googleID: profile.id, displayName: profile.displayName, profilePicture: {picturePath: profile._json.picture} })
             .then((user) => {
               return done(null, user);
             })

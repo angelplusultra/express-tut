@@ -40,11 +40,10 @@ const authController = {
             .then((hash) => {
               // 4: Creation of New User to the DB
               User.create({ email, password: hash })
-                .then((user) =>
-                  res
-                    .status(200)
-                    .json({ msg: "Thank you for registering", user })
-                )
+                .then((user) =>{
+                  req.flash('success', 'User Created')
+                  res.status(201).redirect('/login')
+            })
                 .catch((err) => res.status(500).json({ err: err.message }));
             })
             .catch((err) => res.status(500).json({ err: err.message }));

@@ -42,9 +42,14 @@
         </div>
       </div>
     </nav>
-    <% if (messages.errors) { %> 
+    <% if (messages.error) { %> 
     <div class="alert alert-danger alert-dismissible fade show">
-      <%= messages.errors %>
+      <%= messages.error %>
+    </div>
+    <% } %> 
+    <% if (messages.success) { %> 
+    <div class="alert alert-success alert-dismissible fade show">
+      <%= messages.success %>
     </div>
     <% } %> 
     <div class="container">
